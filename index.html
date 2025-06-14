@@ -1,1133 +1,503 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="refresh" content="3000">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SALES CHAMPIONSHIP Leaderboard</title>
-  <style>
-    .slogan {
-      background: #E30A17; 
-      color: white;
-      padding: 15px 50px; 
-      min-width: 350px; 
-      text-align: center;
-      border-radius: 40px; 
-      font-weight: 700; 
-      font-size: 1.8em;
-      display: inline-block;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-      text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
-      border: 3px solid rgba(255,255,255,0.5);
-      margin: 0 20px;
-      white-space: nowrap;
-      position: relative;
-      overflow: hidden;
-      letter-spacing: 1px; 
-    }
-    
-    .slogan::after {
-      content: "";
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: linear-gradient(
-        to bottom right,
-        rgba(255,255,255,0) 0%,
-        rgba(255,255,255,0) 45%,
-        rgba(255,255,255,0.5) 50%,
-        rgba(255,255,255,0) 55%,
-        rgba(255,255,255,0) 100%
-      );
-      transform: rotate(30deg);
-      animation: shine 3s infinite;
-    }
-    
-    @keyframes shine {
-      0% { left: -100%; }
-      20% { left: 100%; }
-      100% { left: 100%; }
-    }
-
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background-image: url('https://ik.imagekit.io/agrwi9hyb/full_background.png?updatedAt=1747564093123');
-      background-size: cover;
-      background-position: center;
-      background-attachment: fixed;
-      margin: 0;
-      padding: 0;
-      color: #333;
-      overflow-x: hidden;
-    }
-
-    .overlay {
-      background-color: rgba(255, 255, 255, 0.65);
-      min-height: 100vh;
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.1);
-    }
-
-    .header-container {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin: 10px 0 20px;
-      background-color: rgba(255, 255, 255, 0.85);
-      padding: 15px;
-      border-radius: 15px;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-      flex-wrap: wrap;
-    }
-
-    .header-content {
-      display: flex;
-      align-items: center;
-      justify-content: space-between; 
-      width: 100%; 
-      flex: 1;
-    }
-
-    .logo {
-      height: 120px;
-      width: auto;
-      object-fit: contain;
-    }
-
-    .logo-left {
-      margin-right: 20px;
-    }
-
-    .logo-right {
-      margin-left: 20px;
-    }
-
-    .title-group {
-      display: flex;
-      flex-direction: column;
-      margin-right: auto;
-      margin-left: 100px;
-    }
-
-    h1 {
-       font-size: 2.8em;
-       margin: 0 0 5px;
-       background: linear-gradient(135deg, #3498db, #2980b9);
-       -webkit-background-clip: text;
-       -webkit-text-fill-color: transparent;
-        background-clip: text;
-        padding: 5px 0;
-        position: relative;
-        display: inline-block;
-        text-shadow: none;
-        white-space: nowrap;
-    }
-
-    .canal-badge {
-      display: inline-block;
-      background: linear-gradient(135deg, #3498db, #2980b9);
-      color: white;
-      padding: 5px 15px;
-      border-radius: 20px;
-      font-weight: bold;
-      font-size: 1.2em;
-      margin-bottom: 5px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-      width: fit-content;
-    }
-
-    .canal-badge.wholesale {
-      background: linear-gradient(135deg, #e74c3c, #c0392b);
-    }
-
-    .dashboard {
-      display: flex;
-      flex: 1;
-      gap: 20px;
-      flex-direction: row;
-    }
-
-    .top-vendors {
-      flex: 2;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-
-    .top-three-container {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      gap: 20px;
-      height: 100%;
-    }
-
-    .wholesale .top-three-container {
-      justify-content: center;
-    }
-
-    .champion-card {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(250, 250, 250, 0.95));
-      border-radius: 15px;
-      overflow: hidden;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-      position: relative;
-      transition: all 0.3s ease;
-      padding-bottom: 20px;
-      min-height: 500px;
-      border-bottom: 3px solid #e0e0e0;
-      height: 550px;
-    }
-    
-    .wholesale .champion-card {
-      flex: 0 1 30%;
-      max-width: 400px;
-    }
-    
-    .champion-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
-    }
-    
-    .first-place {
-      background: linear-gradient(135deg, rgba(255, 250, 230, 0.95), rgba(255, 245, 200, 0.95));
-      border: 2px solid gold;
-    }
-    
-    .second-place {
-      background: linear-gradient(135deg, rgba(245, 245, 245, 0.95), rgba(235, 235, 235, 0.95));
-      border: 2px solid silver;
-    }
-    
-    .third-place {
-      background: linear-gradient(135deg, rgba(255, 240, 230, 0.95), rgba(245, 225, 215, 0.95));
-      border: 2px solid #cd7f32;
-    }
-
-    .champion-image-container {
-      width: 100%;
-      height: 250px;
-      position: relative;
-      overflow: hidden;
-      display: flex;
-      align-items: flex-end;
-      justify-content: center;
-      margin-bottom: 15px;
-    }
-    
-    .first-place .champion-image-container,
-    .second-place .champion-image-container,
-    .third-place .champion-image-container {
-      height: 250px;
-    }
-
-    .champion-image {
-      height: 90%;
-      max-width: 100%;
-      object-fit: contain;
-      object-position: bottom;
-      filter: drop-shadow(0 5px 10px rgba(0,0,0,0.2));
-    }
-    
-    .first-place .champion-image,
-    .second-place .champion-image,
-    .third-place .champion-image {
-      height: 90%;
-    }
-
-    .champion-details {
-      flex: 1;
-      padding: 0 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-    }
-
-    .champion-rank {
-      position: absolute;
-      top: 15px;
-      left: 15px;
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: bold;
-      font-size: 1.5em;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-      z-index: 5;
-    }
-    
-    .first-place .champion-rank,
-    .second-place .champion-rank,
-    .third-place .champion-rank {
-      width: 40px;
-      height: 40px;
-      font-size: 1.5em;
-    }
-    
-    .first-place .champion-rank {
-      background: linear-gradient(135deg, #ffd700, #ffaa00);
-      color: #333;
-    }
-    
-    .second-place .champion-rank {
-      background: linear-gradient(135deg, #e0e0e0, #c0c0c0);
-      color: #333;
-    }
-    
-    .third-place .champion-rank {
-      background: linear-gradient(135deg, #cd7f32, #a56423);
-      color: #fff;
-    }
-
-    .champion-name {
-      font-size: 1.6em;
-      font-weight: bold;
-      margin-bottom: 10px;
-      color: #2c3e50;
-      text-align: center;
-    }
-    
-    .first-place .champion-name,
-    .second-place .champion-name,
-    .third-place .champion-name {
-      font-size: 1.6em;
-    }
-
-    .champion-score {
-      font-size: 1.5em;
-      background: rgba(52, 152, 219, 0.2);
-      padding: 8px 20px;
-      border-radius: 30px;
-      margin: 5px 0 20px;
-      color: #2980b9;
-      font-weight: bold;
-      display: inline-block;
-    }
-    
-    .first-place .champion-score,
-    .second-place .champion-score,
-    .third-place .champion-score {
-      font-size: 1.5em;
-    }
-    
-    .first-place .champion-score {
-      background: rgba(241, 196, 15, 0.3);
-      color: #d35400;
-    }
-
-    .champion-metrics {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-      padding: 0 15px;
-    }
-
-    .champion-metric {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px 15px;
-      background: rgba(0,0,0,0.03);
-      border-radius: 10px;
-    }
-
-    .champion-metric-value {
-      font-weight: bold;
-      color: #2c3e50;
-      font-size: 1.2em;
-      min-width: 60px;
-      text-align: right;
-    }
-
-    .champion-metric-label {
-      font-size: 0.9em;
-      color: #7f8c8d;
-      text-align: left;
-      flex: 1;
-    }
-
-    .other-vendors {
-      flex: 1;
-      background: rgba(255, 255, 255, 0.7);
-      border-radius: 10px;
-      padding: 15px;
-      overflow-y: auto;
-      max-height: 170px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    }
-
-    .other-vendors h2 {
-      text-align: center;
-      margin-top: 0;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-      padding-bottom: 10px;
-      color: #2c3e50;
-    }
-
-    .other-vendor-item {
-      display: flex;
-      align-items: center;
-      padding: 12px;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-      transition: background-color 0.2s ease;
-      animation: fadeIn 0.5s ease-out backwards;
-    }
-
-    .other-vendor-item:hover {
-      background-color: rgba(0, 0, 0, 0.03);
-    }
-
-    .other-rank {
-      width: 25px;
-      height: 25px;
-      border-radius: 50%;
-      background: rgba(0, 0, 0, 0.05);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-right: 10px;
-      font-size: 0.9em;
-      color: #2c3e50;
-      font-weight: bold;
-    }
-
-    .other-name {
-      flex: 1;
-      color: #2c3e50;
-      font-weight: 500;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    .other-metrics {
-      display: flex;
-      gap: 10px;
-    }
-
-    .other-metric {
-      text-align: center;
-      min-width: 50px;
-    }
-
-    .other-metric-value {
-      font-weight: bold;
-      color: #2c3e50;
-      font-size: 0.9em;
-    }
-
-    .other-metric-label {
-      font-size: 0.7em;
-      opacity: 0.8;
-      color: #7f8c8d;
-    }
-
-    .other-score {
-      background: rgba(52, 152, 219, 0.1);
-      padding: 3px 8px;
-      border-radius: 10px;
-      font-size: 0.9em;
-      color: #2980b9;
-      font-weight: bold;
-      margin-left: 10px;
-      white-space: nowrap;
-    }
-
-    .date-display {
-      position: absolute;
-      bottom: 10px;
-      right: 20px;
-      font-size: 0.9em;
-      opacity: 0.7;
-      color: #7f8c8d;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes shimmer {
-      0% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.7); }
-      70% { box-shadow: 0 0 0 10px rgba(255, 215, 0, 0); }
-      100% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0); }
-    }
-
-    @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.03); }
-      100% { transform: scale(1); }
-    }
-
-    .first-place {
-      animation: pulse 3s infinite, shimmer 2s infinite;
-    }
-
-    .champion-card {
-      animation: fadeIn 0.5s ease-out backwards;
-    }
-
-    .first-place {
-      animation-delay: 0.1s;
-    }
-
-    .second-place {
-      animation-delay: 0.3s;
-    }
-
-    .third-place {
-      animation-delay: 0.5s;
-    }
-
-    .ribbon {
-      position: absolute;
-      right: -5px; 
-      top: -5px;
-      z-index: 1;
-      overflow: hidden;
-      width: 100px; 
-      height: 100px;
-      text-align: right;
-    }
-    
-    .first-place .ribbon span {
-      font-size: 12px;
-      font-weight: bold;
-      color: #FFF;
-      text-transform: uppercase;
-      text-align: center;
-      line-height: 25px;
-      transform: rotate(45deg);
-      width: 120px;
-      display: block;
-      background: linear-gradient(#F70505 0%, #8F0808 100%);
-      box-shadow: 0 3px 10px -5px rgba(0, 0, 0, 1);
-      position: absolute;
-      top: 22px; 
-      right: -27px;
-    }
-    
-    .first-place .ribbon span::before {
-      content: "";
-      position: absolute; 
-      left: 0px; top: 100%;
-      z-index: -1;
-      border-left: 3px solid #8F0808;
-      border-right: 3px solid transparent;
-      border-bottom: 3px solid transparent;
-      border-top: 3px solid #8F0808;
-    }
-    
-    .first-place .ribbon span::after {
-      content: "";
-      position: absolute; 
-      right: 0px; top: 100%;
-      z-index: -1;
-      border-left: 3px solid transparent;
-      border-right: 3px solid #8F0808;
-      border-bottom: 3px solid transparent;
-      border-top: 3px solid #8F0808;
-    }
-
-    
-    .wholesale-view {
-      display: none;
-    }
-
-    .wholesale-bg {
-      background-image: url('https://ik.imagekit.io/agrwi9hyb/finalgros.png?updatedAt=1748818070037');
-    }
-
-    @media (max-width: 1200px) {
-      .dashboard {
-        flex-direction: column;
-      }
-      
-      .other-vendors {
-        max-height: none;
-        margin-top: 20px;
-      }
-    }
-
-    @media (max-width: 992px) {
-      .header-container {
-        flex-direction: column;
-        text-align: center;
-      }
-      
-      .logo-left, .logo-right {
-        margin: 10px 0;
-        height: 80px;
-      }
-      
-      .header-content {
-        flex-direction: column;
-      }
-      
-      .title-group {
-        margin: 15px 0;
-        align-items: center;
-      }
-      
-      h1 {
-        font-size: 2.2em;
-        white-space: normal;
-      }
-      
-      .slogan {
-        font-size: 1.4em;
-        padding: 10px 30px;
-        min-width: auto;
-        margin: 15px 0;
-        white-space: normal;
-      }
-
-      .wholesale .champion-card {
-        flex: 0 1 45%;
-      }
-    }
-
-    .update-container {
-        position: absolute;
-        top: 500px;              /* Moved further down */
-        right: 180px;             /* Moved closer to right edge */
-        width: 220px;            /* Slightly wider */
-        background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(248, 249, 250, 0.95));
-        border-radius: 15px;
-        padding: 20px;
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-        text-align: center;
-        z-index: 100;
-        border: 2px solid rgba(52, 152, 219, 0.3);
-        backdrop-filter: blur(10px);
-        transition: all 0.3s ease;
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaderboard</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-
-        .update-container:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+        
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Poppins', sans-serif;
+            height: 100vh;
         }
-
-        .update-container h3 {
-        margin: 0 0 15px 0;
-        color: #2c3e50;
-        font-size: 1.2em;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 1px;
+        
+        #image-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
-
-        .update-date {
-        font-size: 1em;
-        color: #fff;
-        font-weight: bold;
-        background: linear-gradient(135deg, #3498db, #2980b9);
-        padding: 10px 15px;
-        border-radius: 20px;
-        display: inline-block;
-        box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
-        transition: all 0.3s ease;
+        
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: all 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transform: scale(0.9) rotateY(15deg);
         }
-
-        .update-date:hover {
-        transform: scale(1.05);
-        box-shadow: 0 6px 15px rgba(52, 152, 219, 0.4);
+        
+        .slide.active {
+            opacity: 1;
+            transform: scale(1) rotateY(0deg);
+            z-index: 1;
         }
-
-    @media (max-width: 768px) {
-      .top-three-container {
-        flex-direction: column;
-        height: auto;
-      }
-
-      .update-container {
-        position: static !important;
-        width: 100%;
-        margin-top: 20px;
-        right: auto;
-        top: auto;
-      }
-      
-      .champion-card {
-        min-height: auto;
-        height: auto;
-        margin-bottom: 20px;
-      }
-      
-      .champion-image-container {
-        height: 200px;
-      }
-      
-      .champion-name {
-        font-size: 1.4em;
-      }
-      
-      .champion-score {
-        font-size: 1.3em;
-      }
-      
-      .other-vendor-item {
-        flex-wrap: wrap;
-        gap: 5px;
-      }
-      
-      .other-name {
-        min-width: 100%;
-        order: 1;
-        margin-bottom: 5px;
-      }
-      
-      .other-score {
-        order: 2;
-        margin-left: 0;
-      }
-      
-      .other-metrics {
-        order: 3;
-        width: 100%;
-        justify-content: space-between;
-      }
-      
-      .other-metric {
-        min-width: auto;
-        flex: 1;
-      }
-
-      .wholesale .champion-card {
-        flex: 0 1 100%;
-        max-width: 100%;
-      }
-
-      
-    }
-
-    @media (max-width: 576px) {
-      .overlay {
-        padding: 10px;
-      }
-      
-      .header-container {
-        padding: 10px;
-      }
-      .update-container {
-        margin: 15px 0;
-        padding: 15px;
-      }
-      
-      h1 {
-        font-size: 1.8em;
-      }
-      
-      .canal-badge {
-        font-size: 1em;
-      }
-      
-      .slogan {
-        font-size: 1.2em;
-        padding: 8px 20px;
-      }
-      
-      .champion-metric-label,
-      .champion-metric-value {
-        font-size: 1em;
-      }
-      
-      .date-display {
-        position: static;
-        text-align: center;
-        margin-top: 15px;
-      }
-    }
-  </style>
+        
+        .slide.fade-out {
+            opacity: 0;
+            transform: scale(1.1) rotateY(-15deg);
+        }
+        
+        #current-image {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: crisp-edges;
+        }
+        
+        
+        .channel-slide {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #667eea 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .channel-slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            animation: sweep 3s ease-in-out;
+        }
+        
+        .channel-container {
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            padding: 40px;
+        }
+        
+        .channel-icon {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 30px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+            color: white;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            animation: pulseIcon 2s ease-in-out infinite alternate;
+            position: relative;
+        }
+        
+        .channel-icon::before {
+            content: '';
+            position: absolute;
+            width: 140px;
+            height: 140px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            animation: rotateRing 4s linear infinite;
+        }
+        
+        .channel-title {
+            font-size: 4rem;
+            font-weight: 800;
+            color: #ffffff;
+            text-transform: uppercase;
+            letter-spacing: 8px;
+            margin-bottom: 20px;
+            text-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            transform: translateY(50px) scale(0.8);
+            animation: titleReveal 1.5s ease-out 0.3s forwards;
+            background: linear-gradient(45deg, #ffffff, #f0f8ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .channel-subtitle {
+            font-size: 1.3rem;
+            font-weight: 400;
+            color: rgba(255, 255, 255, 0.9);
+            letter-spacing: 3px;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: subtitleReveal 1.2s ease-out 0.8s forwards;
+            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .channel-divider {
+            width: 200px;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, #4ecdc4, #ff6b6b, transparent);
+            margin: 30px auto;
+            border-radius: 2px;
+            opacity: 0;
+            animation: dividerGrow 1s ease-out 1.2s forwards;
+        }
+        
+        
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .particle:nth-child(1) { left: 10%; animation-delay: 0s; }
+        .particle:nth-child(2) { left: 20%; animation-delay: 1s; }
+        .particle:nth-child(3) { left: 35%; animation-delay: 2s; }
+        .particle:nth-child(4) { left: 50%; animation-delay: 0.5s; }
+        .particle:nth-child(5) { left: 65%; animation-delay: 1.5s; }
+        .particle:nth-child(6) { left: 80%; animation-delay: 2.5s; }
+        .particle:nth-child(7) { left: 90%; animation-delay: 3s; }
+        
+        .loading {
+            color: #ffffff;
+            font-size: 28px;
+            text-align: center;
+            font-weight: 300;
+            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .error {
+            color: #ff6b6b;
+            font-size: 24px;
+            text-align: center;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+        
+        /* Animations */
+        @keyframes sweep {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+        
+        @keyframes pulseIcon {
+            0% { transform: scale(1) rotate(0deg); }
+            100% { transform: scale(1.1) rotate(5deg); }
+        }
+        
+        @keyframes rotateRing {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes titleReveal {
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        
+        @keyframes subtitleReveal {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes dividerGrow {
+            0% {
+                opacity: 0;
+                width: 0;
+            }
+            100% {
+                opacity: 1;
+                width: 200px;
+            }
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0.6;
+            }
+            25% {
+                transform: translateY(-100px) rotate(90deg);
+                opacity: 1;
+            }
+            50% {
+                transform: translateY(-200px) rotate(180deg);
+                opacity: 0.8;
+            }
+            75% {
+                transform: translateY(-100px) rotate(270deg);
+                opacity: 1;
+            }
+        }
+        
+        
+        @media (max-width: 768px) {
+            .channel-title {
+                font-size: 2.5rem;
+                letter-spacing: 4px;
+            }
+            
+            .channel-subtitle {
+                font-size: 1rem;
+                letter-spacing: 2px;
+            }
+            
+            .channel-icon {
+                width: 80px;
+                height: 80px;
+                font-size: 40px;
+            }
+            
+            .channel-container {
+                padding: 20px;
+            }
+            
+            #current-image {
+                max-width: 90%;
+                max-height: 90%;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .channel-title {
+                font-size: 2rem;
+                letter-spacing: 2px;
+            }
+            
+            .channel-subtitle {
+                font-size: 0.9rem;
+                letter-spacing: 1px;
+            }
+        }
+    </style>
 </head>
 <body>
- 
-  <div id="ka-view" class="overlay">
-    <div class="header-container">
-      <img src="https://ik.imagekit.io/agrwi9hyb/perfect%20maouda.gif?updatedAt=1747563948963" alt="Company Logo" class="logo logo-left">
-      
-      <div class="header-content">
-        <div class="title-group">
-          <h1>SALES CHAMPIONSHIP</h1>
-          <div class="canal-badge">Key Account Channel</div>
-        </div>
-        
-        <div class="slogan">Passport to Victory : Who's Flying to Turkey?</div>
-      </div>
-      
-      <img src="https://ik.imagekit.io/agrwi9hyb/best%20try%20gpt.gif?updatedAt=1747563755234" alt="Sales GIF" class="logo logo-right">
+    <div id="image-container">
+        <div class="loading">Loading...</div>
     </div>
-    
-    <div class="dashboard">
-      <div class="top-vendors">
-        <div id="ka-topThree" class="top-three-container"></div>
-      </div>
-      <div style="flex: 1; display: flex; flex-direction: column; gap: 20px;">
-        <div class="other-vendors">
-          <h2>Other Sellers</h2>
-          <div id="ka-otherVendors"></div>
-        </div>
-        <div class="update-container">
-          <h3>Last Update</h3>
-          <div class="update-date" id="ka-updateDate">Loading...</div>
-        </div>
-      </div>
-    </div>
-  </div>
 
- 
-  <div id="wholesale-view" class="overlay wholesale-view wholesale-bg">
-    <div class="header-container">
-      <img src="https://ik.imagekit.io/agrwi9hyb/perfect%20maouda.gif?updatedAt=1747563948963" alt="Company Logo" class="logo logo-left">
-      
-      <div class="header-content">
-        <div class="title-group">
-          <h1>SALES CHAMPIONSHIP</h1>
-          <div class="canal-badge wholesale">Wholesale Channel</div>
-        </div>
+    <script>
+        const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQUFswfg_IW3azl8H2RtmfTJVrTkoq_0enoIVHzzSB9J3C37aUgKsgrPnMPLfdpRAuIwTdiAwh_7Wbt/pub?output=csv";
+        const IMAGE_DURATION = 25000; 
+        const CHANNEL_DURATION = 5000; 
         
-        <div class="slogan">Passport to Victory : Who's Flying to Turkey?</div>
-      </div>
-      
-      <img src="https://ik.imagekit.io/agrwi9hyb/best%20try%20gpt.gif?updatedAt=1747563755234" alt="Sales GIF" class="logo logo-right">
-    </div>
-    
-    <div class="dashboard wholesale">
-      <div class="top-vendors">
-        <div id="wholesale-topThree" class="top-three-container"></div>
-      </div>
-    </div>
-    <div class="date-display" id="wholesale-dateDisplay"></div>
-  </div>
-
-  <script>
-    const kaDataSheetURL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRfJnWZ7JuAcofzGfTfXL3XBmMBIpHNWftUDGReUSVDa_bfEVuZx0fieUqz_5Rfnh_QttTmRpWsTd9h/pub?gid=325122496&single=true&output=csv';
-    const wholesaleDataSheetURL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRfJnWZ7JuAcofzGfTfXL3XBmMBIpHNWftUDGReUSVDa_bfEVuZx0fieUqz_5Rfnh_QttTmRpWsTd9h/pub?gid=1540242746&single=true&output=csv';
-    const imagesSheetURL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRfJnWZ7JuAcofzGfTfXL3XBmMBIpHNWftUDGReUSVDa_bfEVuZx0fieUqz_5Rfnh_QttTmRpWsTd9h/pub?gid=1307762501&single=true&output=csv';
-
-    const defaultImage = '/api/placeholder/200/300';
-    
-    let vendorImages = {};
-    let currentView = 'ka'; 
-    let viewTimer;
-    
-    function fixGoogleDriveURL(url) {
-      if (!url) return defaultImage;
-      
-      if (url.includes('drive.google.com')) {
-        const match = url.match(/id=([^&]+)/);
-        if (match && match[1]) {
-          const fileId = match[1];
-          return `https://drive.google.com/thumbnail?id=${fileId}&sz=w1000`;
-        }
-      }
-      return url;
-    }
-
-    function formatNumber(num) {
-      return new Intl.NumberFormat('fr-FR').format(num);
-    }
-    
-    function renderTopThree(topVendors, channel) {
-      const container = document.getElementById(`${channel}-topThree`);
-      if (!container) return;
-      
-      container.innerHTML = '';
-      
-      const rankNames = ['first-place', 'second-place', 'third-place'];
-      const rankLabels = ['CHAMPION', '', ''];
-      
-      for (let i = 0; i < Math.min(3, topVendors.length); i++) {
-        const vendor = topVendors[i];
-        const imgUrl = fixGoogleDriveURL(vendorImages[vendor.name]) || defaultImage;
-        const rankClass = rankNames[i];
-        
-        const card = document.createElement('div');
-        card.className = `champion-card ${rankClass}`;
-        card.style.animationDelay = `${0.2 * i}s`;
-        
-        let ribbonHtml = '';
-        if (i === 0) {
-          ribbonHtml = `
-            <div class="ribbon">
-              <span>${rankLabels[i]}</span>
-            </div>
-          `;
-        }
-        
-        const isWholesale = channel === 'wholesale';
-        const isYouba = vendor.name === "Youba Kherroub";
-        const recouvrementLabel = isYouba ? "SKU Energizer" : isWholesale ? "Stock Hebdo" : "Recouvrement";
-        const recouvrementValue = isWholesale ? `${vendor.rapportStock}/${vendor.objectifStock}` : `${vendor.rec}%`;
-        
-        card.innerHTML = `
-        ${ribbonHtml}
-        <div class="champion-rank">${i+1}</div>
-        <div class="champion-image-container">
-            <img src="${imgUrl}" alt="${vendor.name}" class="champion-image" onerror="this.onerror=null; this.src='${defaultImage}';">
-        </div>
-        <div class="champion-details">
-            <div class="champion-name">${vendor.name}</div>
-            <div class="champion-score">${vendor.score.toFixed(1)} pts</div>
-            <div class="champion-metrics">
-            <div class="champion-metric">
-                <div class="champion-metric-label">${recouvrementLabel}</div>
-                <div class="champion-metric-value">${recouvrementValue}</div>
-            </div>
-            <div class="champion-metric">
-                <div class="champion-metric-label">CA</div>
-                <div class="champion-metric-value">${vendor.ca}%</div>
-            </div>
-            <div class="champion-metric">
-                <div class="champion-metric-label">Clients (${vendor.clientsVal}/${vendor.clientsTarget})</div>
-                <div class="champion-metric-value">${vendor.clients}%</div>
-            </div>
-            <div class="champion-metric">
-                <div class="champion-metric-label">Moyenne SKU</div>
-                <div class="champion-metric-value">${vendor.moyenneSku}</div>
-            </div>
-            </div>
-        </div>
-        `;
-        
-        container.appendChild(card);
-      }
-    }
-    
-    function renderOtherVendors(vendors, channel) {
-      const container = document.getElementById(`${channel}-otherVendors`);
-      if (!container) return;
-      
-      container.innerHTML = '';
-      
-      for (let i = 3; i < vendors.length; i++) {
-        const v = vendors[i];
-        const item = document.createElement('div');
-        item.className = 'other-vendor-item';
-        item.style.animationDelay = `${0.1 * (i - 3)}s`;
-        
-        const isWholesale = channel === 'wholesale';
-        const isYouba = v.name === "Youba Kherroub";
-        const recouvrementLabel = isYouba ? "SKU Energizer" : isWholesale ? "Stock" : "Recouvrement";
-        const recouvrementValue = isWholesale ? `${v.rapportStock}/${v.objectifStock}` : `${v.rec}%`;
-        
-        item.innerHTML = `
-        <div class="other-rank">${i + 1}</div>
-        <div class="other-name">${v.name}</div>
-        <div class="other-score">${v.score.toFixed(1)} pts</div>
-        <div class="other-metrics">
-            <div class="other-metric">
-            <div class="other-metric-value">${recouvrementValue}</div>
-            <div class="other-metric-label">${recouvrementLabel}</div>
-            </div>
-            <div class="other-metric">
-            <div class="other-metric-value">${v.ca}%</div>
-            <div class="other-metric-label">CA</div>
-            </div>
-            <div class="other-metric">
-            <div class="other-metric-value">${v.clients}%</div>
-            <div class="other-metric-label">Clients</div>
-            </div>
-            <div class="other-metric">
-            <div class="other-metric-value">${v.moyenneSku}</div>
-            <div class="other-metric-label">Moyenne SKU</div>
-            </div>
-        </div>
-        `;
-        
-        container.appendChild(item);
-      }
-    }
-    
-    
-    async function loadVendorImages() {
-      try {
-        const res = await fetch(imagesSheetURL);
-        const data = await res.text();
-        const rows = data.split("\n").slice(1); 
-        
-        rows.forEach(row => {
-          if (row.trim().length > 0) {
-            if (row.includes('"')) {
-              let inQuote = false;
-              let currentField = '';
-              let fields = [];
-              
-              for (let i = 0; i < row.length; i++) {
-                const char = row[i];
-                
-                if (char === '"') {
-                  inQuote = !inQuote;
-                } else if (char === ',' && !inQuote) {
-                  fields.push(currentField);
-                  currentField = '';
-                } else {
-                  currentField += char;
-                }
-              }
-              
-              fields.push(currentField); 
-              
-              if (fields.length >= 2) {
-                const name = fields[0].trim().replace(/^"|"$/g, '');
-                const imageUrl = fields[1].trim().replace(/^"|"$/g, '');
-                vendorImages[name] = imageUrl;
-              }
-            } else {
-              const parts = row.split(",");
-              if (parts.length >= 2) {
-                const name = parts[0].trim();
-                const imageUrl = parts[1].trim();
-                vendorImages[name] = imageUrl;
-              }
+        const CHANNEL_CONFIGS = [
+            {
+                title: "Key Account Channel",
+                icon: "🏢"
+            },
+            {
+                title: "Wholesale Channel",
+                icon: "📦"
             }
-          }
+        ];
+        
+        let currentIndex = 0;
+        let imageUrls = [];
+        let slideshowActive = true;
+        
+        function convertDriveUrl(shareUrl) {
+            if (shareUrl.includes('lh3.googleusercontent.com')) {
+                return shareUrl.replace(/=s\d+$/, '=s1920');
+            }
+            
+            const match = shareUrl.match(/\/file\/d\/([^\/]+)/) || 
+                         shareUrl.match(/id=([^&]+)/) || 
+                         shareUrl.match(/\/([^\/]{33})/);
+            
+            if (match && match[1]) {
+                return `https://lh3.googleusercontent.com/d/${match[1]}=s1920`;
+            }
+            return shareUrl;
+        }
+        
+        async function fetchImageUrls() {
+            try {
+                const response = await fetch(`${SHEET_CSV_URL}&t=${Date.now()}`);
+                if (!response.ok) throw new Error('Failed to fetch sheet');
+                const csvData = await response.text();
+                const rows = csvData.split('\n').slice(0, 2); 
+                
+                if (rows.length === 0) throw new Error('No data in sheet');
+                
+                return rows.map(row => {
+                    const url = row.split(',')[0].trim();
+                    if (!url) throw new Error('Empty URL in sheet');
+                    return url;
+                }).filter(url => url); 
+            } catch (error) {
+                showError(`Sheet error: ${error.message}`);
+                return null;
+            }
+        }
+        
+        function showError(message) {
+            const container = document.getElementById('image-container');
+            container.innerHTML = `<div class="error">${message}</div>`;
+        }
+        
+        function createImageSlide(url) {
+            const slide = document.createElement('div');
+            slide.className = 'slide';
+            
+            const img = document.createElement('img');
+            img.id = 'current-image';
+            img.src = convertDriveUrl(url);
+            
+            img.onload = function() {
+                console.log(`Image loaded: ${img.naturalWidth}x${img.naturalHeight}`);
+            };
+            
+            img.onerror = function() {
+                slide.innerHTML = `<div class="error">Image failed to load</div>`;
+            };
+            
+            slide.appendChild(img);
+            return slide;
+        }
+        
+        function createChannelSlide(channelData) {
+            const slide = document.createElement('div');
+            slide.className = 'slide channel-slide';
+            
+            // Add floating particles
+            const particles = document.createElement('div');
+            particles.className = 'particles';
+            for (let i = 0; i < 7; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particles.appendChild(particle);
+            }
+            slide.appendChild(particles);
+            
+            const container = document.createElement('div');
+            container.className = 'channel-container';
+            
+            const icon = document.createElement('div');
+            icon.className = 'channel-icon';
+            icon.textContent = channelData.icon;
+            
+            const title = document.createElement('h1');
+            title.className = 'channel-title';
+            title.textContent = channelData.title;
+            
+            const divider = document.createElement('div');
+            divider.className = 'channel-divider';
+            
+            const subtitle = document.createElement('p');
+            subtitle.className = 'channel-subtitle';
+            subtitle.textContent = channelData.subtitle;
+            
+            container.appendChild(icon);
+            container.appendChild(title);
+            container.appendChild(divider);
+            container.appendChild(subtitle);
+            slide.appendChild(container);
+            
+            return slide;
+        }
+        
+        function showSlide(slide) {
+            const container = document.getElementById('image-container');
+            
+            const currentActive = container.querySelector('.slide.active');
+            if (currentActive) {
+                currentActive.classList.remove('active');
+                currentActive.classList.add('fade-out');
+                
+                setTimeout(() => {
+                    if (currentActive.parentNode) {
+                        currentActive.remove();
+                    }
+                }, 1200);
+            }
+            
+            container.innerHTML = '';
+            container.appendChild(slide);
+            
+            setTimeout(() => {
+                slide.classList.add('active');
+            }, 100);
+        }
+        
+        async function startSlideshow() {
+            const urls = await fetchImageUrls();
+            if (!urls || urls.length === 0) return;
+            
+            imageUrls = urls.slice(0, 2); 
+            
+            function nextSlide() {
+                if (!slideshowActive) return;
+                
+                const cycle = currentIndex % 4; 
+                
+                if (cycle === 0) {
+                    
+                    const slide = createChannelSlide(CHANNEL_CONFIGS[0]);
+                    showSlide(slide);
+                    setTimeout(nextSlide, CHANNEL_DURATION);
+                } else if (cycle === 1) {
+                    
+                    const slide = createImageSlide(imageUrls[0]);
+                    showSlide(slide);
+                    setTimeout(nextSlide, IMAGE_DURATION);
+                } else if (cycle === 2) {
+                    
+                    const slide = createChannelSlide(CHANNEL_CONFIGS[1]);
+                    showSlide(slide);
+                    setTimeout(nextSlide, CHANNEL_DURATION);
+                } else if (cycle === 3) {
+                    
+                    const slide = createImageSlide(imageUrls[1]);
+                    showSlide(slide);
+                    setTimeout(nextSlide, IMAGE_DURATION);
+                }
+                
+                currentIndex++;
+            }
+            
+            nextSlide();
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            startSlideshow();
         });
         
-        console.log("Vendor images loaded:", vendorImages);
-      } catch (err) {
-        console.error("Error loading vendor images:", err);
-      }
-    }
-  
-    async function loadKAVendors() {
-      try {
-        const res = await fetch(kaDataSheetURL);
-        const data = await res.text();
-        const rows = data.split("\n");
+        function enterFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {
+                    console.error('Fullscreen error:', err);
+                });
+            }
+        }
         
-        // Get the update date from J1 (assuming it's in the first row, 10th column)
-        const headerRow = rows[0].split(",");
-        const updateDate = headerRow[9] ? headerRow[9].trim().replace(/^"|"$/g, '') : 'Not available';
-        document.getElementById('ka-updateDate').textContent = updateDate;
-        
-        const dataRows = rows.slice(1); // Skip header row for vendor data
-
-        const vendors = dataRows
-          .filter(row => row.trim().length > 0)
-          .map(row => {
-            const cols = row.split(",");
-            return { 
-              name: cols[0],
-              recVal: parseFloat(cols[1]),
-              recTarget: parseFloat(cols[2]),
-              caVal: parseFloat(cols[3]),
-              caTarget: parseFloat(cols[4]),
-              clientsVal: parseFloat(cols[5]),
-              clientsTarget: parseFloat(cols[6]),
-              moyenneSku: parseFloat(cols[7]),  
-              score: parseFloat(cols[8]),     
-              
-              rec: ((parseFloat(cols[1]) / parseFloat(cols[2])) * 100).toFixed(1),
-              ca: ((parseFloat(cols[3]) / parseFloat(cols[4])) * 100).toFixed(1),
-              clients: ((parseFloat(cols[5]) / parseFloat(cols[6])) * 100).toFixed(1)
-            };
-          });
-
-        const sorted = vendors.sort((a, b) => b.score - a.score);
-        renderTopThree(sorted, 'ka');
-        renderOtherVendors(sorted, 'ka');
-      } catch (err) {
-        console.error("Error loading KA data:", err);
-        document.getElementById('ka-updateDate').textContent = 'Error loading date';
-      }
-    }
-
-    async function loadWholesaleVendors() {
-      try {
-        const res = await fetch(wholesaleDataSheetURL);
-        const data = await res.text();
-        const rows = data.split("\n").slice(1); 
-
-        const vendors = rows
-          .filter(row => row.trim().length > 0)
-          .map(row => {
-            const cols = row.split(",");
-            return { 
-              name: cols[0],
-              caVal: parseFloat(cols[1]),
-              caTarget: parseFloat(cols[2]),
-              clientsVal: parseFloat(cols[3]),
-              clientsTarget: parseFloat(cols[4]),
-              rapportStock: parseFloat(cols[5]),
-              objectifStock: parseFloat(cols[6]),
-              moyenneSku: parseFloat(cols[7]),
-              score: parseFloat(cols[8]),
-              
-              ca: ((parseFloat(cols[1]) / parseFloat(cols[2])) * 100).toFixed(1),
-              clients: ((parseFloat(cols[3]) / parseFloat(cols[4])) * 100).toFixed(1)
-            };
-          });
-
-        const sorted = vendors.sort((a, b) => b.score - a.score);
-        renderTopThree(sorted, 'wholesale');
-        
-      } catch (err) {
-        console.error("Error loading Wholesale data:", err);
-      }
-    }
-    
-    function toggleView() {
-      const kaView = document.getElementById('ka-view');
-      const wholesaleView = document.getElementById('wholesale-view');
-      
-      if (currentView === 'ka') {
-        kaView.classList.add('wholesale-view');
-        wholesaleView.classList.remove('wholesale-view');
-        currentView = 'wholesale';
-      } else {
-        kaView.classList.remove('wholesale-view');
-        wholesaleView.classList.add('wholesale-view');
-        currentView = 'ka';
-      }
-      
-      clearTimeout(viewTimer);
-      viewTimer = setTimeout(toggleView, 15000); // 15 seconds
-    }
-    
-    const slogans = [
-      "Passport to Victory : Who's Flying to Turkey?",
-      "من سيسافر إلى تركيا؟"
-    ];
-    let currentSloganIndex = 0;
-    
-    function rotateSlogan() {
-      const sloganElements = document.querySelectorAll('.slogan');
-      sloganElements.forEach(el => {
-        el.textContent = slogans[currentSloganIndex];
-      });
-      currentSloganIndex = (currentSloganIndex + 1) % slogans.length;
-      setTimeout(rotateSlogan, 5000);
-    }
-    
-    async function init() {
-      await loadVendorImages();
-      await loadKAVendors();
-      await loadWholesaleVendors();
-      rotateSlogan();
-      
-      viewTimer = setTimeout(toggleView, 15000); // 15 seconds
-    }
-    init();
-    
-    
-  
-    setInterval(() => {
-      loadKAVendors();
-      loadWholesaleVendors();
-    }, 60000);
-  </script>
+        document.addEventListener('click', enterFullscreen);
+        window.addEventListener('load', enterFullscreen);
+    </script>
 </body>
 </html>
